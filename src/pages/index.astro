@@ -1,17 +1,97 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { capabilities, experience, profile, projects } from '../data/site';
 
+const title = `${profile.name} — ${profile.role}`;
+const description = 'A DevOps and MLOps portfolio preview focused on dependable delivery systems, cloud-native operations, and applied AI workflows.';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout {title} {description}>
+	<header class="site-header">
+		<a class="wordmark" href="#top" aria-label="Back to top"><span class="wordmark-mark" aria-hidden="true">/</span><span>{profile.name}</span></a>
+		<nav aria-label="Primary navigation"><a href="#work">Work</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+	</header>
+
+	<main id="main-content">
+		<section class="hero section-shell" id="top" aria-labelledby="hero-title">
+			<div class="hero-copy">
+				<p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>{profile.availability}</p>
+				<h1 id="hero-title">Systems that <em>ship</em> with confidence.</h1>
+				<p class="hero-lead">{profile.intro}</p>
+				<div class="hero-actions"><a class="button button-primary" href="#work">See selected work <span aria-hidden="true">↓</span></a><a class="button button-quiet" href="#contact">Start a conversation <span aria-hidden="true">↗</span></a></div>
+			</div>
+			<aside class="hero-card" aria-label="Portfolio focus">
+				<div class="card-topline"><span>Focus area</span><span>2026</span></div>
+				<div class="card-signal"><span class="signal-orbit orbit-one" aria-hidden="true"></span><span class="signal-orbit orbit-two" aria-hidden="true"></span><span class="signal-core" aria-hidden="true"></span></div>
+				<div class="focus-copy"><strong>DevOps</strong><span>with applied</span><strong>MLOps</strong></div>
+				<div class="card-footer"><span>Reliable paths</span><span>Human review</span></div>
+			</aside>
+		</section>
+
+		<section class="intro-band" aria-label="Portfolio principles">
+			<div class="section-shell intro-grid"><p class="section-index">01 — Overview</p><div><p class="large-statement">Infrastructure should make thoughtful work feel <em>calmer</em>, not more complicated.</p><p class="body-copy">I am interested in the details that turn an application into a dependable system: repeatable releases, useful health signals, straightforward recovery, and automation that leaves a clear trail for people to inspect.</p></div></div>
+		</section>
+
+		<section class="section-shell capabilities-section" id="approach" aria-labelledby="capabilities-title">
+			<div class="section-heading"><p class="section-index">02 — Capabilities</p><h2 id="capabilities-title">The work behind a reliable release.</h2></div>
+			<div class="capability-list">
+				{capabilities.map((capability) => <article class="capability"><p>{capability.number}</p><h3>{capability.title}</h3><p>{capability.description}</p></article>)}
+			</div>
+		</section>
+
+		<section class="work-section" id="work" aria-labelledby="work-title">
+			<div class="section-shell">
+				<div class="section-heading section-heading-dark"><p class="section-index">03 — Selected work</p><h2 id="work-title">Built around observable, practical systems.</h2></div>
+				<div class="project-list">
+					{projects.map((project) => (
+						<article class={`project-card accent-${project.accent}`}>
+							<div class="project-copy"><p class="project-label">{project.label}</p><h3>{project.title}</h3><p>{project.description}</p><ul class="stack-list" aria-label={`${project.title} technology stack`}>{project.stack.map((item) => <li>{item}</li>)}</ul></div>
+							<div class="architecture-wrap"><p class="diagram-label">System flow</p><ol class="system-flow" aria-label={`${project.title} system flow`}>{project.steps.map((step, index) => <li><span class="flow-number">0{index + 1}</span><span>{step}</span></li>)}</ol></div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section-shell timeline-section" aria-labelledby="timeline-title">
+			<div class="section-heading"><p class="section-index">04 — Direction</p><h2 id="timeline-title">Learning in public, with the systems to prove it.</h2></div>
+			<div class="timeline">{experience.map((item) => <article class="timeline-item"><p>{item.period}</p><div><h3>{item.role}</h3><p>{item.body}</p></div></article>)}</div>
+		</section>
+
+		<section class="contact-section" id="contact" aria-labelledby="contact-title">
+			<div class="section-shell contact-grid">
+				<div class="contact-copy"><p class="section-index">05 — Contact</p><h2 id="contact-title">Let’s make the next release feel less risky.</h2><p>Use the form to reach out. Once configured, messages arrive directly in the portfolio inbox.</p><div class="direct-links"><a href={`mailto:${profile.email}`}>Email placeholder <span aria-hidden="true">↗</span></a><a href={profile.linkedin} rel="noreferrer" target="_blank">LinkedIn placeholder <span aria-hidden="true">↗</span></a><a href={profile.github} rel="noreferrer" target="_blank">GitHub placeholder <span aria-hidden="true">↗</span></a></div></div>
+				<form class="contact-form" id="contact-form" novalidate>
+					<label><span>Name</span><input name="name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Your name" /></label>
+					<label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label>
+					<label><span>What would you like to discuss?</span><textarea name="message" minlength="12" maxlength="3000" required placeholder="A little context helps." rows="5"></textarea></label>
+					<label class="honeypot" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off" /></label>
+					<div class="form-bottom"><p id="form-status" role="status" aria-live="polite"></p><button class="button button-primary" type="submit">Send message <span aria-hidden="true">→</span></button></div>
+				</form>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer section-shell"><p>© 2026 {profile.name} <span aria-hidden="true">·</span> {profile.location}</p><a href="#top">Back to top <span aria-hidden="true">↑</span></a></footer>
+
+	<script>
+		const form = document.querySelector<HTMLFormElement>('#contact-form');
+		const status = document.querySelector<HTMLElement>('#form-status');
+		const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+		form?.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (!form.reportValidity() || !status || !submitButton) return;
+			status.textContent = 'Sending your message…';
+			submitButton.disabled = true;
+			try {
+				const values = Object.fromEntries(new FormData(form).entries());
+				const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) });
+				const result = await response.json() as { message?: string };
+				status.textContent = result.message ?? 'Something went wrong. Please try again.';
+				if (response.ok) form.reset();
+			} catch {
+				status.textContent = 'Unable to reach the form service. Please try again later.';
+			} finally { submitButton.disabled = false; }
+		});
+	</script>
+</BaseLayout>

@@ -11,6 +11,7 @@
 		"build:cloudflare": "astro build",
 		"preview:cloudflare": "npm run build:cloudflare && wrangler dev",
 		"deploy:cloudflare": "npm run build:cloudflare && wrangler deploy",
+		"deploy:cloudflare:initial": "npm run build:cloudflare && wrangler deploy --secrets-file .secrets.production",
 		"preview": "astro preview",
     "astro": "astro"
   },

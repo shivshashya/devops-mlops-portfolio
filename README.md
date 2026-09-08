@@ -25,15 +25,20 @@ CONTACT_FROM_EMAIL="Portfolio <hello@example.com>"
    npx wrangler login
    ```
 
-2. Add each production secret when prompted. Do not paste values into source files or Git:
+2. For the first deployment, create a local secrets file from the template and edit it with your real Resend values. This file is ignored by Git:
 
    ```sh
-   npx wrangler secret put RESEND_API_KEY
-   npx wrangler secret put CONTACT_TO_EMAIL
-   npx wrangler secret put CONTACT_FROM_EMAIL
+   cp .env.example .secrets.production
+   nano .secrets.production
    ```
 
-3. Deploy:
+3. Deploy the new Worker with those secrets:
+
+   ```sh
+   npm run deploy:cloudflare:initial
+   ```
+
+4. For later changes, secrets remain stored securely in Cloudflare, so use:
 
    ```sh
    npm run deploy:cloudflare

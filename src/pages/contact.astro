@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { profile } from '../data/site';
+---
+
+<BaseLayout title={`Contact — ${profile.name}`} description="Start a conversation about DevOps, platform engineering, or dependable delivery systems.">
+	<SiteHeader active="contact" />
+	<main id="main-content" class="site-shell page-main contact-page">
+		<section class="page-intro"><p class="section-number">Contact</p><h1>Make the next release feel <span>less risky.</span></h1><p>Share a little context and the portfolio inbox will handle the rest once its email settings are connected.</p></section>
+		<section class="contact-page-grid"><div class="contact-details"><p class="section-number">Direct links</p><a href={`mailto:${profile.email}`}>{profile.email} <span>↗</span></a><a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn <span>↗</span></a><a href={profile.github} target="_blank" rel="noreferrer">GitHub <span>↗</span></a></div><form class="contact-form" id="contact-form" novalidate><label><span>Name</span><input name="name" autocomplete="name" minlength="2" maxlength="100" required placeholder="Your name" /></label><label><span>Email</span><input name="email" type="email" autocomplete="email" required placeholder="you@example.com" /></label><label><span>What would you like to discuss?</span><textarea name="message" minlength="12" maxlength="3000" required placeholder="A little context helps." rows="6"></textarea></label><label class="honeypot" aria-hidden="true"><span>Website</span><input name="website" tabindex="-1" autocomplete="off" /></label><div class="form-bottom"><p id="form-status" role="status" aria-live="polite"></p><button class="button button-coral" type="submit">Send message <span aria-hidden="true">→</span></button></div></form></section>
+	</main>
+	<script>
+		const form = document.querySelector<HTMLFormElement>('#contact-form');
+		const status = document.querySelector<HTMLElement>('#form-status');
+		const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+		form?.addEventListener('submit', async (event) => {
+			event.preventDefault();
+			if (!form.reportValidity() || !status || !submitButton) return;
+			status.textContent = 'Sending your message…';
+			submitButton.disabled = true;
+			try {
+				const values = Object.fromEntries(new FormData(form).entries());
+				const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(values) });
+				const result = await response.json() as { message?: string };
+				status.textContent = result.message ?? 'Something went wrong. Please try again.';
+				if (response.ok) form.reset();
+			} catch { status.textContent = 'Unable to reach the form service. Please try again later.'; }
+			finally { submitButton.disabled = false; }
+		});
+	</script>
+</BaseLayout>

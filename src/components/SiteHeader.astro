@@ -1,0 +1,19 @@
+---
+import { profile } from '../data/site';
+
+interface Props {
+	active?: 'work' | 'about' | 'contact';
+}
+
+const { active } = Astro.props;
+---
+
+<header class="site-header site-shell">
+	<a class="wordmark" href="/" aria-label="Portfolio home"><span aria-hidden="true">◒</span> {profile.name}</a>
+	<nav aria-label="Primary navigation">
+		<a href="/work" aria-current={active === 'work' ? 'page' : undefined}>Work</a>
+		<a href="/about" aria-current={active === 'about' ? 'page' : undefined}>About</a>
+		<a href="/contact" aria-current={active === 'contact' ? 'page' : undefined}>Contact</a>
+	</nav>
+	<a class="header-cta" href="/contact">Let’s talk <span aria-hidden="true">↗</span></a>
+</header>

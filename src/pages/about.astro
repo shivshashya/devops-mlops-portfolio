@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { capabilities, experience, profile } from '../data/site';
+---
+
+<BaseLayout title={`About — ${profile.name}`} description="A DevOps-first practice focused on dependable systems and evidence-based MLOps work.">
+	<SiteHeader active="about" />
+	<main id="main-content" class="site-shell page-main">
+		<section class="page-intro about-intro"><p class="section-number">About / DevOps first</p><h1>Reliability is a <span>team sport.</span></h1><p>{profile.intro}</p></section>
+		<section class="about-copy"><p>I am interested in the work that lowers the cost of change: understandable delivery paths, observability that points to reality, and recovery that does not depend on guesswork.</p><p>MLOps is part of that practice through hands-on local projects. The focus remains on trustworthy systems, clear boundaries, and human review where it matters.</p></section>
+		<section class="about-capabilities" aria-labelledby="about-capabilities-title"><p class="section-number">Capabilities</p><h2 id="about-capabilities-title">Where I focus.</h2><div>{capabilities.map((capability) => <article><span>{capability.number}</span><h3>{capability.title}</h3><p>{capability.description}</p></article>)}</div></section>
+		<section class="timeline" aria-labelledby="timeline-title"><p class="section-number">Direction</p><h2 id="timeline-title">Learning in public, with systems to prove it.</h2>{experience.map((item) => <article><span>{item.period}</span><div><h3>{item.role}</h3><p>{item.body}</p></div></article>)}</section>
+	</main>
+</BaseLayout>
